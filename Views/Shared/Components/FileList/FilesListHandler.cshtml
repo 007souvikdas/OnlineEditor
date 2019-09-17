@@ -1,0 +1,49 @@
+@model string[]
+@{var count=0;}
+@foreach(var element in Model)
+{
+    count+=1;
+    var str=count+".";  
+    var newClickId=element+"Click";
+    <p>
+        @{
+        <button class="button-color" id="@element" onclick="remove(this.id)" style="float: right;"><img src="/images/remove.png" width="16" height="16" alt="nope"></button>
+        }
+    </p>
+        <div id="@newClickId" class="fileNameHovered" onclick="fileClick(this.id)">
+        @str @element        
+        </div>        
+}
+<script>
+    function fileClick(id)
+    {      
+        var newFileName= id.toString().split("Click")[0];
+        var url="@Url.Action("LoadEditor","Components")";
+                var container1=$("#editorPage");
+                $.get(url,{fileName:newFileName},function(data){
+                    container1.html(data);
+                });
+    }
+
+function remove(id)
+{       
+        var url1="@Url.Action("RemoveFile","FileOpsHandler")";
+        $.ajax({
+            url:url1,
+            type:"DELETE",
+            data:{
+                name: id
+            },
+            success: function(data){
+            if(data.code==200)
+            {
+               loadSidebar();
+               loadEditorViewWithEmpty();
+            }
+            else{
+               alert(data.status);          
+            }
+            }
+        });
+}
+</script>

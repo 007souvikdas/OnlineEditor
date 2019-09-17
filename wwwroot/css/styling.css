@@ -1,0 +1,71 @@
+    /* Add some padding on document's body to prevent the content
+    to go underneath the header and footer */
+    body{        
+        padding-top: 60px;
+        padding-bottom: 40px;
+    }
+    .container{
+        width: 100%;
+        margin: 0 auto; /* Center the DIV horizontally */
+    }
+    .fixed-header, .fixed-footer{
+        width: 100%;
+        position: fixed;        
+        background: rgb(16, 69, 112);
+        padding: 4px 0;
+        color: #fff;
+        text-align: center;
+    }
+    .fixed-header{
+        top: 0;
+    }
+    .fixed-footer{
+        bottom: 0;
+    }
+    /* Some more styles to beutify this example */
+    nav a{
+        color: #fff;
+        text-decoration: none;
+        padding: 7px 25px;
+        display: inline-block;
+    }
+    .container p{
+        line-height: 200px; /* Create scrollbar to test positioning */
+    }
+    .sidebar {      
+        max-width: 20%;
+        height: 92%;
+        background-color: powderblue;
+        padding: 2px;       
+        border: solid rgb(16, 69, 112);
+      }
+      .button-color
+      {
+        background-color: rgb(176, 224, 230);
+        border: none;
+      }
+      .button-color:hover {
+        background-color: rgb(176, 204, 230);
+      }
+      
+      .bar
+      {
+        width: 100%;
+        position: static;        
+        background: rgb(3, 196, 19);
+        border: solid rgb(16, 69, 112);
+        padding: 4px 0;
+        text-align: center;
+      }
+      .bar:hover{
+        background-color: rgb(2, 150, 14); 
+      } 
+      .fileNameHovered:hover{
+        background-color: rgb(154, 222, 231);
+      }
+      .editor {      
+        width: 78.8%;
+        height: 93%;
+        background-color: rgb(176, 224, 230);     
+        border : solid rgb(16, 69, 112);
+      }

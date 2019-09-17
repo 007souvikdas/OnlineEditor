@@ -1,0 +1,71 @@
+<div id="editorPage" class="editor" style="float: right;">
+    @await Component.InvokeAsync("FileEditor", new {fileName = ""})    
+</div>
+
+<div class="sidebar">
+<h4 align="center">
+    <button id="newFile" style="float: right;" class="button-color"><img src="/images/file_add.png" width="16" height="20" alt="nope"></button>
+    Your Files
+</h4>
+<div id="fileList">
+    @await Component.InvokeAsync("FileList")
+</div>
+<br/>
+<button id="Execute" onclick="compileAndExecute()" class="bar">Execute</button>    
+<br/>
+<label hidden id="labelWait">Please wait... while your code is executed</label>
+</div>
+
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script> 
+<script >
+    var count=0;
+    $("#newFile").click(function(){
+        var url="@Url.Action("AddNewFile","FileOpsHandler")";
+        count+=1;
+        var name1="Hello"+count+".cs";
+        $.post(url,{name:name1},function(data){
+            if(data.code==200)
+            {
+               loadSidebar();
+               loadEditorViewWithEmpty();
+            }
+            else{
+            alert(data.message);          
+            }
+        });
+    });
+    function loadEditorViewWithEmpty()
+    {
+        var url="@Url.Action("LoadEditor","Components")";
+                var container1=$("#editorPage");
+                $.get(url,{fileName:""},function(data){
+                    container1.html(data);
+                });
+    }
+    
+    function compileAndExecute()
+    {
+        var url="@Url.Action("CompileAndExecute","Code")";
+        $("#labelWait").show();
+        $.post(url,function(data){       
+               $("#fileEditorDiv").height("50%");  
+                url="@Url.Action("ResultHandler","Components")";
+                var container=$("#resultHandler");
+                container.show();     
+                $.get(url,{result:data.message},function(data){
+                    container.html(data);
+                    console.log(data);
+                    $("#labelWait").hide();
+                });           
+        });
+    }
+    function loadSidebar()
+    {
+         url="@Url.Action("LoadSideBar","Components")";
+                var container=$("#fileList");
+                $.get(url,function(data){
+                    container.html(data);
+                });
+    }
+</script>
+

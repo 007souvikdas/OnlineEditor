@@ -1,0 +1,17 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="/css/styling.css">
+        <title>
+            Online C# Editor
+        </title>
+    </head>
+    <body>
+        <div class="content-wrapper">
+           @await Html.PartialAsync("Header")
+        </div>
+        @RenderBody()
+        <div class="content-wrapper">
+            @await Html.PartialAsync("Footer")
+        </div>
+    </body>
+</html>

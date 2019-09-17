@@ -1,0 +1,45 @@
+@model OnlineEditor.Models.SourceCode
+<div align="center">
+<button class="button-color" onclick="saveClick()" id="save" style="float: right;"><img src="/images/save.png" width="20" height="20" alt="nope"></button>
+<div id="fileName">
+    @Html.DisplayFor(model=>model.FileName)    
+</div>
+</div>
+<div id="fileEditorDiv">
+    @Html.TextAreaFor(model=>model.sourceContent,  new { style = "width: 100%; height:91.5%; resize: none", id="sourceCode" })                       
+</div>
+<div id="resultHandler">
+</div>
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script>
+        $("#sourceCode").click(function(){            
+         var fileName=$("#fileName").text().trim(); 
+         $("#fileEditorDiv").height("100%");
+         //make the div of result tab hidden
+         var container=$("#resultHandler");
+         container.hide();         
+
+         if(fileName.indexOf("*")<=0)
+         {
+             fileName+="*";
+             //maximize the editor page after user clicks on it
+             $("#fileName").text(fileName);
+         }
+        });
+function saveClick()
+{
+    url="@Url.Action("SaveFile","FileOpsHandler")";
+    var fileName=$("#fileName").text().replace("*","").trim();
+    var code = $("#sourceCode").val();
+    $.post(url,{name:fileName,sourceCode: code},function(data){
+        if(data.code==200)
+            {
+                $("#fileName").text(fileName);
+            }
+            else{
+               alert(data.status);          
+            }
+    });
+}
+</script>
+
