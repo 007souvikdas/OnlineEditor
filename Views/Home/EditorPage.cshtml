@@ -55,6 +55,7 @@
                 if(data.code!=200)
                 {
                     $("#labelWait").hide();                    
+                    alert("some error occured with message:"+data.message);
                 }
                 $.post(url,{result:data.message},function(data){
                     container.html(data);                    

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -19,10 +20,13 @@ public class RequiredReferences
         list.Add(MetadataReference.CreateFromFile(typeof(SyntaxToken).GetTypeInfo().Assembly.Location));
         list.Add(MetadataReference.CreateFromFile(typeof(FileStream).GetTypeInfo().Assembly.Location));
         list.Add(MetadataReference.CreateFromFile(typeof(Console).GetTypeInfo().Assembly.Location));
-        //list.Add(MetadataReference.CreateFromFile(typeof(AppDomain).GetTypeInfo().Assembly.Location));
+        list.Add(MetadataReference.CreateFromFile(typeof(AppDomain).GetTypeInfo().Assembly.Location));
         list.Add(MetadataReference.CreateFromFile(typeof(Encoding).GetTypeInfo().Assembly.Location));
         list.Add(MetadataReference.CreateFromFile(typeof(CancellationToken).GetTypeInfo().Assembly.Location));
+        list.Add(MetadataReference.CreateFromFile(typeof(Aes).GetTypeInfo().Assembly.Location));
+        list.Add(MetadataReference.CreateFromFile(typeof(SymmetricAlgorithm).GetTypeInfo().Assembly.Location));
         list.Add(MetadataReference.CreateFromFile(Path.Combine(dotnetCoreDirectory, "System.Runtime.dll")));
+
         return list.ToArray();
     }
 }

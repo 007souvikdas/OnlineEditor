@@ -13,12 +13,15 @@ public class ParseSyntaxTree
         {
             Console.WriteLine($"\t{method}");
             MethodDeclarationSyntax methodDeclarationSyntax = method as MethodDeclarationSyntax;
-            string s2 = methodDeclarationSyntax.Modifiers.ToString();
-            string p = methodDeclarationSyntax.Identifier.Text;
-            if (p.Equals("Main") && (s2.Equals("public static") || s2.Equals("static public")))
+            if (methodDeclarationSyntax != null)
             {
-                Console.WriteLine(classNameWithMain);
-                return (true, classNameWithMain);
+                string s2 = methodDeclarationSyntax.Modifiers.ToString();
+                string p = methodDeclarationSyntax.Identifier.Text;
+                if (p.Equals("Main") && (s2.Equals("public static") || s2.Equals("static public")))
+                {
+                    Console.WriteLine(classNameWithMain);
+                    return (true, classNameWithMain);
+                }
             }
         }
         return (false, string.Empty);
@@ -38,11 +41,14 @@ public class ParseSyntaxTree
                     foreach (var classname12 in namespaceDeclarationSyntax.Members)
                     {
                         ClassDeclarationSyntax classDeclarationSyntax = classname12 as ClassDeclarationSyntax;
-                        var res = ClassHandler(classDeclarationSyntax);
-                        if (res.Item1)
+                        if (classDeclarationSyntax != null)
                         {
-                            classNameWithMain = namespaceDeclarationSyntax.Name + "." + res.Item2;
-                            break;
+                            var res = ClassHandler(classDeclarationSyntax);
+                            if (res.Item1)
+                            {
+                                classNameWithMain = namespaceDeclarationSyntax.Name + "." + res.Item2;
+                                break;
+                            }
                         }
                     }
                 }
