@@ -32,8 +32,9 @@ namespace OnlineEditor
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddSingleton<IFileStorage, LocalFileStorage>();
+            services.AddSingleton<IFileStorage, AzureStorage>();
             services.AddSingleton<ICompiler, Compiler>();
+            services.AddHostedService<BlobCleanupService>();
 
             MSBuildLocator.RegisterDefaults();
         }

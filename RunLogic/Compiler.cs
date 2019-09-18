@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.Extensions.Configuration;
@@ -24,12 +25,19 @@ public class Compiler : ICompiler
         {
             trees.Add(CSharpSyntaxTree.ParseText(fileContent));
         }
-
-        string guid = Guid.NewGuid().ToString();
-        string guidFileName = guid + ".dll";
-        var dotnetCoreDirectory = Path.GetDirectoryName(typeof(object).GetTypeInfo().Assembly.Location);
-        System.Console.WriteLine("Dotnet core directory:" + dotnetCoreDirectory);
-        DeleteUnwantedFiles(path);
+        string dirPath = Path.Combine(compilationPath, path);
+        if (Directory.Exists(dirPath))
+        {
+            try{
+            Directory.Delete(dirPath, true);
+            }catch(Exception e)
+            {
+                System.Console.WriteLine("some Exception occured with message:"+e.Message);
+            }
+        }
+        Directory.CreateDirectory(dirPath);
+        string guid = path;
+        string guidFileName = path + ".dll";
         string message = string.Empty;
 
         string classNameWithMain = new ParseSyntaxTree().ReturnClassnameWithMain(trees);
@@ -37,14 +45,12 @@ public class Compiler : ICompiler
         {
             var compilation = CSharpCompilation.Create(guidFileName)
                     .WithOptions(new CSharpCompilationOptions(OutputKind.ConsoleApplication, mainTypeName: classNameWithMain))
-                    .AddReferences(
-                        MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
-                        MetadataReference.CreateFromFile(typeof(Console).GetTypeInfo().Assembly.Location),
-                        MetadataReference.CreateFromFile(Path.Combine(dotnetCoreDirectory, "System.Runtime.dll")))
+                    .AddReferences(RequiredReferences.GetMetadataReferences())                       
                     .AddSyntaxTrees(trees);
-            ;
+
             string fileName = Path.Combine(compilationPath, path, guidFileName);
-            string runtimeConfigPath = Path.Combine(compilationPath, "runtimeConfig", "Test.runtimeconfig.json");
+            string currentAssemblyPath = Assembly.GetExecutingAssembly().Location.Replace(@"\OnlineEditor.dll","");
+            string runtimeConfigPath = Path.Combine(currentAssemblyPath, "OnlineEditor.runtimeconfig.json");
             File.Copy(runtimeConfigPath, Path.Combine(compilationPath, path, guid + ".runtimeconfig.json"));
 
             var emitResult = compilation.Emit(fileName);
@@ -90,6 +96,7 @@ public class Compiler : ICompiler
                 System.Console.WriteLine("exception while deleteing the file" + e.Message);
             }
         }
+        Directory.Delete(deletionPath);
     }
     public (bool, string) ExecuteFiles(string fileName, string path)
     {
@@ -109,6 +116,7 @@ public class Compiler : ICompiler
 
             string output = process.StandardOutput.ReadToEnd();
             string error = process.StandardError.ReadToEnd();
+            DeleteUnwantedFiles(path);
             if (!string.IsNullOrEmpty(output))
             {
                 return (true, output);

@@ -18,7 +18,7 @@ public class ComponentsController : Controller
     {
         return ViewComponent("FileEditor",fileName);
     }
-    [HttpGet("Result")]
+    [HttpPost("Result")]
     public ViewComponentResult ResultHandler(string result)
     {
         return ViewComponent("ResultHandler",result);

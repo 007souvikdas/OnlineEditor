@@ -1,10 +1,8 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
-
-[Route("home")]
 public class HomeController : Controller
 {
-    [HttpGet("editor")]
+    [HttpGet("")]
     public ViewResult EditorPage()
     {
         return View();

@@ -5,7 +5,7 @@
     @Html.DisplayFor(model=>model.FileName)    
 </div>
 </div>
-<div id="fileEditorDiv">
+<div id="fileEditorDiv">    
     @Html.TextAreaFor(model=>model.sourceContent,  new { style = "width: 100%; height:91.5%; resize: none", id="sourceCode" })                       
 </div>
 <div id="resultHandler">
@@ -19,7 +19,7 @@
          var container=$("#resultHandler");
          container.hide();         
 
-         if(fileName.indexOf("*")<=0)
+         if(fileName.indexOf("*")<=0 && fileName.length>0)
          {
              fileName+="*";
              //maximize the editor page after user clicks on it
@@ -30,7 +30,11 @@ function saveClick()
 {
     url="@Url.Action("SaveFile","FileOpsHandler")";
     var fileName=$("#fileName").text().replace("*","").trim();
+    if(fileName.length!=0)
+    {
     var code = $("#sourceCode").val();
+    if(code.length>0)
+    {
     $.post(url,{name:fileName,sourceCode: code},function(data){
         if(data.code==200)
             {
@@ -40,6 +44,16 @@ function saveClick()
                alert(data.status);          
             }
     });
+    }
+    else
+    {
+        alert("cannot save empty contents in a file");
+    }
+    }
+    else
+    {
+        alert("please create a file first");
+    }
 }
 </script>
 

@@ -52,9 +52,12 @@
                 url="@Url.Action("ResultHandler","Components")";
                 var container=$("#resultHandler");
                 container.show();     
-                $.get(url,{result:data.message},function(data){
-                    container.html(data);
-                    console.log(data);
+                if(data.code!=200)
+                {
+                    $("#labelWait").hide();                    
+                }
+                $.post(url,{result:data.message},function(data){
+                    container.html(data);                    
                     $("#labelWait").hide();
                 });           
         });

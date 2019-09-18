@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -49,12 +48,20 @@ public class ParseSyntaxTree
                 }
                 else
                 {
+
                     ClassDeclarationSyntax classDeclarationSyntax = className as ClassDeclarationSyntax;
-                    var res = ClassHandler(classDeclarationSyntax);
-                    if (res.Item1)
+                    if (classDeclarationSyntax != null)
                     {
-                        classNameWithMain = res.Item2;
-                        break;
+                        var res = ClassHandler(classDeclarationSyntax);
+                        if (res.Item1)
+                        {
+                            classNameWithMain = res.Item2;
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        classNameWithMain = string.Empty;
                     }
                 }
             }
