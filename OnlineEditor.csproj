@@ -7,5 +7,7 @@
     <PackageReference Include="Microsoft.AspNetCore.App"/>
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All"/>
     <PackageReference Include="Microsoft.Build.Locator" Version="1.2.6"/>
+    <PackageReference Include="Microsoft.Azure.Storage.Common" Version="11.0.1"/>
+    <PackageReference Include="Microsoft.Azure.Storage.Blob" Version="11.0.1"/>
   </ItemGroup>
 </Project>
