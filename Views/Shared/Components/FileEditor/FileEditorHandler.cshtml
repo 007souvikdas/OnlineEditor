@@ -14,6 +14,21 @@
 <script src="js/jquery-linenumbers.js"></script>
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <script>
+    $(document).keydown(function(e){
+        tabHandler(e);
+    });    
+    function tabHandler(e)
+    {
+        if(e.keyCode==9)
+        {
+            var pos=$('#sourceCode').prop("selectionStart");      
+            var code = $("#sourceCode");
+            var str=code.val();
+            str=str.substring(0,pos)+"    "+str.substring(pos);
+            code.text(str);                    
+            e.preventDefault();
+        }
+    }
     $(document).ready(function(){
          var fileNameLength=$("#fileName").text().trim().length>0; 
          if(fileNameLength<=0)
