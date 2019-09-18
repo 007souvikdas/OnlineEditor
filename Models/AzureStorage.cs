@@ -17,11 +17,15 @@ public class AzureStorage : IFileStorage
     }
     public bool AddFile(string path, string name)
     {
+        //check if the file is already there or not
         container = blobClient.GetContainerReference(path);
         if (container.Exists() || container.CreateIfNotExists())
         {
             var blob = container.GetBlockBlobReference(name);
-            blob.UploadText(string.Empty);
+            if(!blob.Exists())
+            {
+                blob.UploadText(string.Empty);
+            }
             return true;
         }
         else

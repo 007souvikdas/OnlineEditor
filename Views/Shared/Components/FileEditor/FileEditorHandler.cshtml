@@ -6,15 +6,25 @@
 </div>
 </div>
 <div id="fileEditorDiv">    
-    @Html.TextAreaFor(model=>model.sourceContent,  new { style = "width: 100%; height:91.5%; resize: none", id="sourceCode" })                       
+    @Html.TextAreaFor(model=>model.sourceContent,  new { style = "width: 100%; height:95%;  float: right; resize: none", id="sourceCode" })                       
 </div>
 <div id="resultHandler">
 </div>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="js/jquery-linenumbers.js"></script>
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <script>
+    $(document).ready(function(){
+         var fileNameLength=$("#fileName").text().trim().length>0; 
+         if(fileNameLength<=0)
+         {
+            $("#fileName").text("No Files to be Execute!!!");
+         }
+    });
+
         $("#sourceCode").click(function(){            
          var fileName=$("#fileName").text().trim(); 
-         $("#fileEditorDiv").height("100%");
+         $("textarea").height("91%");
          //make the div of result tab hidden
          var container=$("#resultHandler");
          container.hide();         
@@ -26,6 +36,7 @@
              $("#fileName").text(fileName);
          }
         });
+        
 function saveClick()
 {
     url="@Url.Action("SaveFile","FileOpsHandler")";

@@ -48,7 +48,7 @@
         var url="@Url.Action("CompileAndExecute","Code")";
         $("#labelWait").show();
         $.post(url,function(data){       
-               $("#fileEditorDiv").height("50%");  
+               $("textarea").height("45%");  
                 url="@Url.Action("ResultHandler","Components")";
                 var container=$("#resultHandler");
                 container.show();     
